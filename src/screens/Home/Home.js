@@ -65,8 +65,8 @@ const Home = ({ navigation }) => {
             </H2>
           </Col>
         </Wrapper>
-        {data.map((name) => (
-          <ItemList>
+        {data.map((name, index) => (
+          <ItemList key={`${name} - ${index}`}>
             <Row>
               <Col flex={1}>
                 <TouchableOpacity
