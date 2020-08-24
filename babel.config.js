@@ -9,9 +9,9 @@ module.exports = {
         root: ['./src'],
         alias: {
           config: './src/config',
-          reducers: './src/reducers',
           screens: './src/screens',
           store: './src/store',
+          components: './src/components',
         },
       },
     ],

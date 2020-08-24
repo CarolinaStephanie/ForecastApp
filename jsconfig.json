@@ -3,10 +3,10 @@
     "baseUrl": ".",
     "paths": {
       "*": ["src/*"],
-      "config/*": ["src/store/*"],
+      "config/*": ["src/config/*"],
       "screens/*": ["src/screens/*"],
       "store/*": ["src/store/*"],
-      "reducers/*": ["src/reducers/*"]
+      "components/*": ["src/components/*"]
     }
   }
 }

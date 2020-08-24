@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import reducers from 'reducers/reducers';
+import reducers from './reducers';
 import './reactotron';
 
 const persistedReducer = persistReducer(
