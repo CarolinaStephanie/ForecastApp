@@ -2,8 +2,9 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
+import MapView from 'react-native-maps';
 
-import { Container, Content, Row, Wrapper } from 'components/Layout';
+import { Container, Content, Row, Wrapper, Col } from 'components/Layout';
 import Header from 'components/Header';
 import { H5, H4, H6 } from 'components/Label';
 
@@ -12,6 +13,7 @@ import { SPACING, COLORS, STRINGS } from 'config';
 const CityDetails = ({ navigation }) => {
   const { data, isLoading, error } = useSelector(({ city }) => city);
   const { temp, temp_min, temp_max, pressure, humidity } = data?.main;
+  const { lon, lat } = data?.coord;
 
   const blockItem = (title, description) => (
     <Row justifyContent="center">
@@ -36,7 +38,7 @@ const CityDetails = ({ navigation }) => {
         )}
         renderCenter={() => (
           <H6 uppercase fontStyle="medium" letterSpacing={3}>
-            {STRINGS.cityTitle}
+            {`${data?.name || ''} ${STRINGS.cityTitle}`}
           </H6>
         )}
       />
@@ -54,11 +56,40 @@ const CityDetails = ({ navigation }) => {
           {blockItem(STRINGS.min, `${temp_min} °F`)}
           {blockItem(STRINGS.pressure, `${pressure} mb`)}
           {blockItem(STRINGS.humidity, `${humidity} %`)}
+          <Row>
+            <Block>
+              <Col>
+                <Row>
+                  <H4 uppercase fontStyle="bold" letterSpacing={3} color={COLORS.black}>
+                    {STRINGS.map}
+                  </H4>
+                </Row>
+                <Row>
+                  <StyledMapView
+                    loadingEnabled={true}
+                    region={{
+                      latitude: lat,
+                      longitude: lon,
+                      latitudeDelta: 0.0922,
+                      longitudeDelta: 0.0421,
+                    }}
+                  />
+                </Row>
+              </Col>
+            </Block>
+          </Row>
         </Content>
       )}
     </Container>
   );
 };
+
+const StyledMapView = styled(MapView)`
+  width: 100%;
+  height: 200px;
+  margin-top: ${SPACING.huge}px;
+  padding-left: 0;
+`;
 
 const Block = styled.View`
   flex-direction: column;

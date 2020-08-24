@@ -3,6 +3,7 @@ import types from './CityTypes';
 const defaultState = {
   data: {
     main: {},
+    coord: {},
   },
   isLoading: false,
   error: {

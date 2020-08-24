@@ -12,6 +12,7 @@ const STRINGS = {
   min: 'Min',
   pressure: 'Pressure',
   humidity: 'Humidity',
+  map: 'Map',
 };
 
 export default STRINGS;
