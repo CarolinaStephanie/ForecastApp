@@ -1,6 +1,6 @@
 const STRINGS = {
   homeTitle: 'Forecast App',
-  citySearch: 'Type the city name',
+  citySearch: 'City name or ZIP code (only available for USA cities)',
   search: 'Search',
   cityTitle: 'City Details',
   back: 'back',
