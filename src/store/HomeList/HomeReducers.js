@@ -1,7 +1,8 @@
-import types from './HistoryTypes';
+import types from './HomeTypes';
 
 const defaultState = {
-  data: [],
+  historyList: [],
+  favoriteList: [],
 };
 
 const reducers = (state = defaultState, { type, payload }) => {
@@ -9,7 +10,12 @@ const reducers = (state = defaultState, { type, payload }) => {
     case types.UPDATE_HISTORY:
       return {
         ...state,
-        data: payload.data,
+        historyList: payload.data,
+      };
+    case types.UPDATE_FAVORITE:
+      return {
+        ...state,
+        favoriteList: payload.data,
       };
     default:
       return state;

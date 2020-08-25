@@ -4,7 +4,6 @@ import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import reducers from './reducers';
-import './reactotron';
 
 const persistedReducer = persistReducer(
   {
@@ -15,7 +14,7 @@ const persistedReducer = persistReducer(
   reducers,
 );
 
-const store = createStore(persistedReducer, compose(applyMiddleware(thunk), console.tron.createEnhancer()));
+const store = createStore(persistedReducer, compose(applyMiddleware(thunk)));
 
 const persistor = persistStore(store);
 

@@ -1,14 +1,27 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Platform, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
-import MapView from 'react-native-maps';
 
 import { Container, Content, Row, Wrapper, Col } from 'components/Layout';
 import Header from 'components/Header';
 import { H5, H4, H6 } from 'components/Label';
 
 import { SPACING, COLORS, STRINGS } from 'config';
+
+let MapView;
+
+if (Platform.OS !== 'web') {
+  MapView = require('react-native-maps').default;
+}
+const mapStyle = StyleSheet.create({
+  map: {
+    width: '100%',
+    height: 200,
+    marginTop: SPACING.huge,
+    paddingLeft: 0,
+  },
+});
 
 const CityDetails = ({ navigation }) => {
   const { data, isLoading, error } = useSelector(({ city }) => city);
@@ -65,15 +78,22 @@ const CityDetails = ({ navigation }) => {
                   </H4>
                 </Row>
                 <Row>
-                  <StyledMapView
-                    loadingEnabled={true}
-                    region={{
-                      latitude: lat,
-                      longitude: lon,
-                      latitudeDelta: 0.0922,
-                      longitudeDelta: 0.0421,
-                    }}
-                  />
+                  {Platform.OS !== 'web' ? (
+                    <MapView
+                      style={mapStyle.map}
+                      loadingEnabled={true}
+                      region={{
+                        latitude: lat,
+                        longitude: lon,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                      }}
+                    />
+                  ) : (
+                    <H6 uppercase fontStyle="medium" letterSpacing={3}>
+                      {STRINGS.mapsUnavailability}
+                    </H6>
+                  )}
                 </Row>
               </Col>
             </Block>
@@ -83,13 +103,6 @@ const CityDetails = ({ navigation }) => {
     </Container>
   );
 };
-
-const StyledMapView = styled(MapView)`
-  width: 100%;
-  height: 200px;
-  margin-top: ${SPACING.huge}px;
-  padding-left: 0;
-`;
 
 const Block = styled.View`
   flex-direction: column;

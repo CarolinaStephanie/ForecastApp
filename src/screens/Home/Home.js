@@ -1,40 +1,44 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers';
 import { useForm, Controller } from 'react-hook-form';
 import styled from 'styled-components/native';
 
 import { Container, Content, Row, Col, Wrapper } from 'components/Layout';
 import Header from 'components/Header';
-import { H6, H4, H2 } from 'components/Label';
+import { H6, H2 } from 'components/Label';
+import ListItem from './ListItem';
 
 import { getCityForecast } from 'store/City/CityUseCases';
-import { updateHistory } from 'store/HistoryList/HistoryUseCases';
+import { updateHomeList } from 'store/HomeList/HomeUseCases';
 
 import { SPACING, COLORS, STRINGS } from 'config';
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const { isLoading } = useSelector(({ city }) => city);
-  const { data } = useSelector(({ historyList }) => historyList);
-  const validatorSchema = yup.object().shape({
-    city: yup.string().required(),
-  });
+  const { historyList, favoriteList } = useSelector(({ homeList }) => homeList);
 
   const { control, handleSubmit } = useForm({
     mode: 'onBlur',
     defaultValues: {
       city: '',
     },
-    resolver: yupResolver(validatorSchema),
   });
   const onSumbit = ({ city }) => {
     dispatch(getCityForecast(city));
     navigation.navigate('CityDetails');
-    dispatch(updateHistory(city));
+    dispatch(updateHomeList(city, false, historyList, 'updateHistory'));
   };
+
+  const emptyList = () => (
+    <Wrapper justifyContent="center" alignItems="center" paddingVertical={SPACING.default}>
+      <Col>
+        <H6 uppercase letterSpacing={3}>
+          {STRINGS.nothingToShow}
+        </H6>
+      </Col>
+    </Wrapper>
+  );
 
   return (
     <Container>
@@ -65,26 +69,20 @@ const Home = ({ navigation }) => {
             </H2>
           </Col>
         </Wrapper>
-        {data.map((name, index) => (
-          <ItemList key={`${name} - ${index}`}>
-            <Row>
-              <Col flex={1}>
-                <TouchableOpacity
-                  onPress={() => {
-                    dispatch(getCityForecast(name));
-                    navigation.navigate('CityDetails');
-                  }}
-                >
-                  <H4>{name}</H4>
-                </TouchableOpacity>
-              </Col>
-              <TouchableOpacity onPress={() => dispatch(updateHistory(name, true))}>
-                <Col flex={1}>
-                  <H4 color={COLORS.red}>{STRINGS.remove}</H4>
-                </Col>
-              </TouchableOpacity>
-            </Row>
-          </ItemList>
+        {!historyList.length && emptyList()}
+        {historyList.map((name, index) => (
+          <ListItem key={`${name} - ${index}`} name={name} />
+        ))}
+        <Wrapper justifyContent="center" alignItems="center" paddingVertical={SPACING.default}>
+          <Col>
+            <H2 uppercase fontStyle="Bold" letterSpacing={3}>
+              {STRINGS.favoriteList}
+            </H2>
+          </Col>
+        </Wrapper>
+        {!favoriteList.length && emptyList()}
+        {favoriteList.map((name, index) => (
+          <ListItem key={`${name} - ${index}`} name={name} isFavoriteItem />
         ))}
       </Content>
       <StyledButton onPress={handleSubmit(onSumbit)}>
