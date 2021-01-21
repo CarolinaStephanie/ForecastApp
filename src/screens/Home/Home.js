@@ -55,7 +55,13 @@ const Home = ({ navigation }) => {
             name="city"
             control={control}
             render={({ onChange, value, onBlur }) => (
-              <StyledTextInput placeholder={STRINGS.citySearch} onChangeText={onChange} value={value} onBlur={onBlur} />
+              <StyledTextInput
+                testID="city-input"
+                placeholder={STRINGS.citySearch}
+                onChangeText={onChange}
+                value={value}
+                onBlur={onBlur}
+              />
             )}
           />
         </Row>
@@ -71,7 +77,7 @@ const Home = ({ navigation }) => {
         </Wrapper>
         {!historyList.length && emptyList()}
         {historyList.map((name, index) => (
-          <ListItem key={`${name} - ${index}`} name={name} />
+          <ListItem key={`${name} - ${index}`} name={name} index={index} />
         ))}
         <Wrapper justifyContent="center" alignItems="center" paddingVertical={SPACING.default}>
           <Col>
@@ -82,10 +88,10 @@ const Home = ({ navigation }) => {
         </Wrapper>
         {!favoriteList.length && emptyList()}
         {favoriteList.map((name, index) => (
-          <ListItem key={`${name} - ${index}`} name={name} isFavoriteItem />
+          <ListItem key={`${name} - ${index}`} name={name} isFavoriteItem index={index} />
         ))}
       </Content>
-      <StyledButton onPress={handleSubmit(onSumbit)}>
+      <StyledButton onPress={handleSubmit(onSumbit)} testID="search-button">
         <H6 uppercase fontStyle="medium" color={COLORS.white}>
           {STRINGS.search}
         </H6>
@@ -101,18 +107,6 @@ const StyledTextInput = styled.TextInput`
   border-bottom-width: 1px;
 `;
 
-const ItemList = styled.View`
-  flex-direction: column;
-  border-bottom-width: 1px;
-  border-left-width: 1px;
-  border-bottom-left-radius: 8px;
-  padding-vertical: ${SPACING.large}px;
-  padding-horizontal: ${SPACING.large}px;
-  margin-vertical: ${SPACING.medium}px;
-  box-shadow: 1px 1px 3px ${`${COLORS.black}70`};
-  elevation: 5;
-`;
-
 const StyledButton = styled.TouchableOpacity`
   flex-direction: row;
   width: 75%;
@@ -123,7 +117,7 @@ const StyledButton = styled.TouchableOpacity`
   align-self: center;
   justify-content: center;
   margin-top: ${SPACING.medium}px;
-  margin-bottom: ${SPACING.huge}px;
+  margin-bottom: 100;
   ${({ disabled }) => disabled && 'opacity: 0.5'}
 `;
 

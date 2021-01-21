@@ -45,7 +45,7 @@ const CityDetails = ({ navigation }) => {
     <Container>
       <Header
         renderLeftIcon={() => (
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.goBack()} testID="go-back">
             <H6 color={COLORS.primary}>{STRINGS.back}</H6>
           </TouchableOpacity>
         )}

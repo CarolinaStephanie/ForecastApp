@@ -1,0 +1,14 @@
+{
+  "testRunner": "jest",
+  "runnerConfig": "e2e/config.json",
+  "configurations": {
+    "ios": {
+      "type": "ios.simulator",
+      "build": "xcodebuild -workspace ios/ForecastApp.xcworkspace -configuration Debug -scheme ForecastApp -sdk iphonesimulator -derivedDataPath ios/build",
+      "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/ForecastApp.app",
+      "device": {
+        "type": "iPhone 11"
+      }
+    }
+  }
+}

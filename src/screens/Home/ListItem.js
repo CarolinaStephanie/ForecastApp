@@ -5,14 +5,14 @@ import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
 
 import { Row, Col } from 'components/Layout';
-import { H4 } from 'components/Label';
+import { H4, H5 } from 'components/Label';
 
 import { getCityForecast } from 'store/City/CityUseCases';
 import { updateHomeList } from 'store/HomeList/HomeUseCases';
 
 import { SPACING, COLORS, STRINGS } from 'config';
 
-const ListItem = ({ name, isFavoriteItem }) => {
+const ListItem = ({ name, isFavoriteItem, index }) => {
   const { historyList, favoriteList } = useSelector(({ homeList }) => homeList);
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -29,21 +29,28 @@ const ListItem = ({ name, isFavoriteItem }) => {
               dispatch(getCityForecast(name));
               navigation.navigate('CityDetails');
             }}
+            testID={isFavoriteItem ? `favorite-city-${index}` : `history-city-${index}`}
           >
             <H4>{name}</H4>
           </TouchableOpacity>
         </Col>
         <Col>
           {!isFavoriteItem && (
-            <TouchableOpacity onPress={() => dispatch(updateHomeList(name, false, favoriteList, 'updateFavorite'))}>
+            <TouchableOpacity
+              onPress={() => dispatch(updateHomeList(name, false, favoriteList, 'updateFavorite'))}
+              testID={`add-favorite-${index}`}
+            >
               <Col flex={1}>
-                <H4 color={COLORS.primary}>{STRINGS.addFavorite}</H4>
+                <H5 color={COLORS.primary}>{STRINGS.addFavorite}</H5>
               </Col>
             </TouchableOpacity>
           )}
-          <TouchableOpacity onPress={() => dispatch(updateHomeList(name, true, options.list, options.actionName))}>
+          <TouchableOpacity
+            onPress={() => dispatch(updateHomeList(name, true, options.list, options.actionName))}
+            testID={isFavoriteItem ? `favorite-list-remove-${index}` : `history-list-remove-${index}`}
+          >
             <Col flex={1}>
-              <H4 color={COLORS.red}>{STRINGS.remove}</H4>
+              <H5 color={COLORS.red}>{STRINGS.remove}</H5>
             </Col>
           </TouchableOpacity>
         </Col>
